@@ -2,12 +2,25 @@ import HeadingLeft from './components/HeadingLeft.js'
 import Heading from './components/Heading.js'
 import StackedBar from './components/StackedBar.js'
 import Popup from './components/Popup.js'
+import Collapsible from './components/Collapsible.js'
+import Datatable from './components/Datatable.js'
 
 import xlabels from './lib/xlabels.js'
 
 Vue.prototype.$bus = new Vue()
 
+Vue.mixin({
+    created() {
+        if (this.$options.css) {
+            const el = document.createElement('style');
+            el.innerHTML = this.$options.css
+            document.querySelector('head').appendChild(el)
+        }
+    }
+})
+
 new Vue({
+    components: { Heading, HeadingLeft, StackedBar, Popup, Collapsible, Datatable },
     el: '#app',
     mounted() {
         
@@ -26,7 +39,6 @@ new Vue({
             this.$bus.$emit('hidePopup')
         },
     },
-    components: { Heading, HeadingLeft, StackedBar, Popup },
     template: `
     <div>
         <div style="display: flex">
@@ -38,13 +50,17 @@ new Vue({
                 <Heading />
                 <div style="padding: 25px">
                         
+                    <Collapsible>
+                        <Datatable :data="[{first: 1, sales: [2,1]},{first: 3, sales: [1,2]}]"/>
+                    </Collapsible>
+                    
                     <StackedBar
                         :data="[[10,10,10],[20,30,20]]"
                         :xlabels="xlabels"
                         :ylabels="['Maksimarket','Selver']"
                         max="40"
                     />
-                    
+
                 </div>
             </div>
 

@@ -2,7 +2,7 @@ export default {
 
     props: {
         width: { default: 100 },
-        items: { default: [] },
+        data: { default: [] },
         filled: { default: false }
     },
 
@@ -17,40 +17,39 @@ export default {
     methods: {
         xScale(index) {
             return d3.scaleLinear()
-                .domain([0, this.items[0].values.length - 1])
+                .domain([0, this.data[0].values.length - 1])
                 .range([this.padding, this.width - this.padding])
                 (index)
         },
         yScale(value) {
             return d3.scaleLinear()
-                //.domain(d3.extent(d3.merge(this.items.map(item => item.values))))
-                .domain([0,150000])
+                .domain(d3.extent(d3.merge(this.data.map(d => d.values))))
                 .range([this.height - this.padding, this.padding])
                 (value)
         },
-        line(items) {
+        line(data) {
             return d3.line()
                 .x((d, index) => this.xScale(index))
                 .y(d => this.yScale(d))
                 .defined(d => d > 0)
-                (items)
+                (data)
         },
-        area(items) {
+        area(data) {
             return d3.area()
                 .x((d, index) => this.xScale(index))
                 .y1(d => this.yScale(d))
                 .y0(d => this.yScale(0))
                 .defined(d => d > 0)
-                (items)
+                (data)
         },
-        lastChange(item) {
-            const last = item.values.length - 1
-            return item.values[last] - item.values[last - 1]
+        lastChange(d) {
+            const last = d.values.length - 1
+            return d.values[last] - d.values[last - 1]
         },
         color(value) {
             return d3.scaleLinear()
-                .domain([-20,20])
-                .range(['#F79824','#74A500'])
+                .domain(d3.extent(d3.merge(this.data.map(d => d.values))))
+                .range(['gray','gray'])
                 (value)
         },
     },
@@ -60,19 +59,19 @@ export default {
 
         <path
             v-if="filled"
-            v-for="(item, index) in items"
-            :fill="color(lastChange(item))"
-            :d="area(item.values)"
+            v-for="(d, index) in data"
+            :fill="color(lastChange(d))"
+            :d="area(d.values)"
             opacity="0.25"
         />
 
         <path
-            v-for="(item, index) in items"
+            v-for="(d, index) in data"
             fill="none"
             stroke-width="2"
-            :stroke="color(lastChange(item))"
+            :stroke="color(lastChange(d))"
             stroke-linejoin="round"
-            :d="line(item.values)"
+            :d="line(d.values)"
             opacity="0.5"
         />
 
