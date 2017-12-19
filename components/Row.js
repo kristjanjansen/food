@@ -25,6 +25,7 @@ export default {
                         :ylabels="ylabels"
                         :max="max"
                         :focus-index="focusIndex"
+                        :color="filters.filter(f => f.key == filterKey)[0].color"
                     />
                 </div>
             </div>

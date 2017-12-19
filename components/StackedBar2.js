@@ -11,6 +11,7 @@ export default {
         ylabels: { default: () => [] },
         max: { default: null },
         focusIndex: { default: -1 },
+        color: { default: '#aaa' }
     },
     data: () => ({
         padding: 5
@@ -58,6 +59,11 @@ export default {
                 return ['0', Math.floor(this.maxValue / 1000) + 'k']
             }
             return ['0', this.maxValue]
+        },
+        colorShade() {
+            return d3.scaleLinear()
+                .domain([0, 10])
+                .range([this.color, 'white'])
         }
     },
     methods: {
@@ -87,7 +93,7 @@ export default {
                                 :width="xScale(1) - (padding * 3)"
                                 :height="yScale(row.height)"
                                 stroke="white"
-                                fill="#F2AF29"
+                                :fill="colorShade(rowi)"
                                 :opacity="focusIndex > -1 ? (rowi == focusIndex ? 0.9 : 0.3) : 0.8"
                                 rx="2"
                                 ry="2"

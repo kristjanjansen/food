@@ -84,12 +84,14 @@ new Vue({
     },
     computed: {
         filters() {
-            return Object.keys(this.activeFilters).map(filterKey => {
+            return Object.keys(this.activeFilters).map((filterKey, filterIndex) => {
                 return {
                     key: filterKey,
                     // Converting values to Set and back to array
                     // makes the values unique
                     values: [...new Set(this.products.map(p => p[filterKey]))],
+                    color: d3.schemeCategory10[filterIndex]
+                    
                 }
             })
         },
@@ -117,11 +119,11 @@ new Vue({
                 :key="filterKey"
                 :active-filters="activeFilters"
                 :filters="filters"
-                :data="salesByKey(filteredProducts, filterKey)"
+                :data="salesByKey(filterIndex == 0 ? products : filteredProducts, filterKey)"
+                :max="maxSales(filterIndex == 0 ? products : filteredProducts)"
+                :focus-index="filterIndex == 0 ? focusIndex(filterKey) : -1"
                 :xlabels="xlabels"
                 :ylabels="filters.filter(f => f.key === filterKey)[0].values"
-                :max="maxSales(filterIndex == 0 ? products : filteredProducts)"
-                :focus-index="focusIndex(filterKey)"
                 @filter="onFilter"
             />
 
