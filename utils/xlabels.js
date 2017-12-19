@@ -1,17 +1,4 @@
-export default [
-    ['Dec',2016],
-    ['Jan',2017],
-    ['Feb',2017],
+const years = [2015,2016]
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
-    ['Mar',2017],
-    ['Apr',2017],
-    ['Jun',2017],
-
-    ['Jul',2017],
-    ['Aug',2017],
-    ['Sep',2017],
-
-    ['Oct',2017],
-    ['Nov',2017],
-    ['Dec',2017]
-]
+export default Array.prototype.concat(...years.map(y => months.map(m => [m,y])))

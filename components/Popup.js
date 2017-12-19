@@ -35,10 +35,10 @@ export default {
                 left: x + 'px',
                 top: y + 'px',
                 background: 'white',
-                border: '2px solid rgba(0,0,0,0.3)',
+                border: '2px solid rgba(0,0,0,0.1)',
                 padding: '10px',
                 borderRadius: '5px',
-                boxShadow: '0 0 4px rgba(0,0,0,0.15)'
+                boxShadow: '0 0 4px rgba(0,0,0,0.05)'
 
             }"
         >

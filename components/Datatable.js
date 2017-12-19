@@ -40,6 +40,7 @@ export default {
             border-collapse: collapse;
             width: 100%;
             font-face: Cousine, monospace;
+            font-size: 0.8em;
         }
         th {
             text-align: left;
