@@ -1,13 +1,13 @@
 export default {
-    props: ['filterKey', 'filterValue', 'groups'],
+    props: ['filterKey', 'filterValue', 'activeFilters'],
     template: `
     <div
         class="FilterButton"
         :style="{
-            background: groups[filterKey] === filterValue
+            background: activeFilters[filterKey] === filterValue
                 ? 'rgba(255,255,255,0.6)'
                 : 'rgba(0,0,0,0)',
-            border: groups[filterKey] === filterValue
+            border: activeFilters[filterKey] === filterValue
                 ? '1px solid rgba(0,0,0,0.3)'
                 : '1px solid rgba(0,0,0,0)',
         }"
@@ -31,7 +31,7 @@ export default {
                 :style="{
                     userSelect: 'none'
                 }"
-                v-show="groups[filterKey] === filterValue"
+                v-show="activeFilters[filterKey] === filterValue"
             >
                 ⨉
             </span>
@@ -44,7 +44,7 @@ export default {
             display: flex;
             align-items: center;
             border-radius: 100px;
-            padding: '0 5px';
+            padding: 0 0.5rem;
             cursor: 'pointer;
         }
     `

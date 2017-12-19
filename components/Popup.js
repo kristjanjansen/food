@@ -6,7 +6,7 @@ export default {
         subtitle: '',
         subsubtitle: '',
         show: false,
-        width: 120,
+        width: 150,
         height: 85,
         hideTimeout: null
     }),
@@ -17,8 +17,8 @@ export default {
             this.x = x - (this.width / 2)
             this.y = y - (this.height + 10)
             this.title = title
-            this.subtitle = subtitle
-            this.subsubtitle = subsubtitle
+            this.subtitle = subtitle.length > 20 ? subtitle.slice(0,20) + '...' : subtitle
+            this.subsubtitle = subsubtitle.length > 20 ? subsubtitle.slice(0, 20) + '...' : subsubtitle
         })
         this.$bus.$on('hidePopup', () => {
             this.hideTimeout = setTimeout(() => this.show = false, 200)
@@ -38,7 +38,8 @@ export default {
                 border: '2px solid rgba(0,0,0,0.1)',
                 padding: '10px',
                 borderRadius: '5px',
-                boxShadow: '0 0 4px rgba(0,0,0,0.05)'
+                boxShadow: '0 0 4px rgba(0,0,0,0.05)',
+                whiteSpace: 'nowrap'
 
             }"
         >
