@@ -37,32 +37,26 @@ new Vue({
         xlabels,
     }),
     methods: {
-        calculateSales(products = []) {
-            if (products.length) {
-                return products.reduce((prev, current) => {
-                    return current.sales.map((sale, index) => sale + prev[index])
-                }, Array(products[0].sales.length).fill(0))
-            }
-            return []
+        calculateSales(products) {
+            return products.reduce((prev, current) => {
+                return current.sales.map((sale, index) => sale + prev[index])
+            }, Array(products[0].sales.length).fill(0))
         },
-        salesByKey(products = [], key) {
-            if (products.length) {
-                return this.groupFilters
-                    .filter(f => f.key == key)[0].values
-                    .map(value => {
-                        return this.calculateSales(
-                            this.filterProducts(products, { [key]: value })
-                        )
-                    })
-                }
-            return []
+        salesByKey(products, key) {
+            return this.groupFilters
+                .filter(f => f.key == key)[0].values
+                .map(value => {
+                    return this.calculateSales(
+                        this.filterProducts(products, { [key]: value })
+                    )
+                })
         },
         filterProducts(products = [], query) {
             function search(d) {
                 return Object.keys(this).every(key => d[key] === this[key])
             }
             return products.filter(search, query)
-        },
+        }
     },
     computed: {
         groupFilters() {
@@ -70,7 +64,7 @@ new Vue({
                 return {
                     key: groupKey,
                     // Converting values to Set and back to array
-                    // makes group values unique
+                    // makes the values unique
                     values: [...new Set(this.products.map(p => p[groupKey]))],
                 }
             })
@@ -83,29 +77,46 @@ new Vue({
     <Layout>
         
     <div slot="main">
-            
-        <div v-for="groupKey in Object.keys(this.groups)">
-            <h3>{{ groupKey }}</h3>
-            <StackedBar
-                v-show="salesByKey(products, groupKey)"
-                :data="salesByKey(products, groupKey)"
-                :xlabels="xlabels"
-                :ylabels="groupFilters.filter(f => f.key === groupKey)[0].values"
-                :max="maxSales"
-            />
+        
+        <div v-if="!products.length">Loading</div>
+        
+        <div v-if="products.length">
+            <div v-for="groupKey in Object.keys(this.groups)">
+                <div class="title">{{ groupKey }}</div>
+                <StackedBar
+                    v-show="salesByKey(products, groupKey)"
+                    :data="salesByKey(products, groupKey)"
+                    :xlabels="xlabels"
+                    :ylabels="groupFilters.filter(f => f.key === groupKey)[0].values"
+                    :max="maxSales"
+                />
+            </div>
+
+            <Collapsible>
+                <Datatable :data="products" />
+            </Collapsible>
         </div>
 
-        <Collapsible>
-            <Datatable :data="products" />
-        </Collapsible>
-            
-            
-        </div>
-
-        <div slot="modal">
-            <Popup />
-        </div>
+    </div>
+    
+    <div slot="modal">
+        <Popup />
+    </div>
 
     </Layout>
-    ` 
+    `,
+    css: `
+        .title {
+            font-size: 1.5rem;
+            margin: 2rem 0 1.5rem 0;
+        }
+        .title:first-child {
+            margin-top: 0;
+        }
+        .subtitle {
+            color: rgba(0,0,0,0.5);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+    `
 })

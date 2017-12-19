@@ -48,5 +48,7 @@ export default {
     .Layout__main {
         padding: 1rem;
     }
+
+    
     `
 }
