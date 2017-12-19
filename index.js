@@ -117,10 +117,10 @@ new Vue({
                 :key="filterKey"
                 :active-filters="activeFilters"
                 :filters="filters"
-                :data="salesByKey(products, filterKey)"
+                :data="salesByKey(filteredProducts, filterKey)"
                 :xlabels="xlabels"
                 :ylabels="filters.filter(f => f.key === filterKey)[0].values"
-                :max="maxSales(products)"
+                :max="maxSales(filterIndex == 0 ? products : filteredProducts)"
                 :focus-index="focusIndex(filterKey)"
                 @filter="onFilter"
             />
