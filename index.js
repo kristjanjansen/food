@@ -86,6 +86,8 @@ new Vue({
             <Row v-for="groupKey in Object.keys(this.groups)"
                 :group-key="groupKey"
                 :key="groupKey"
+                :groups="groups"
+                :filters="groupFilters"
                 :data="salesByKey(products, groupKey)"
                 :xlabels="xlabels"
                 :ylabels="groupFilters.filter(f => f.key === groupKey)[0].values"
