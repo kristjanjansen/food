@@ -1,6 +1,7 @@
 import Layout from './components/Layout2.js'
-import StackedBar from './components/StackedBar.js'
+import Row from './components/Row.js'
 import Popup from './components/Popup.js'
+
 import Collapsible from './components/Collapsible.js'
 import Datatable from './components/Datatable.js'
 
@@ -14,7 +15,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, StackedBar, Popup, Collapsible, Datatable },
+    components: { Layout, Row, Popup, Collapsible, Datatable },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
@@ -81,16 +82,15 @@ new Vue({
         <div v-if="!products.length">Loading</div>
         
         <div v-if="products.length">
-            <div v-for="groupKey in Object.keys(this.groups)">
-                <div class="title">{{ groupKey }}</div>
-                <StackedBar
-                    v-show="salesByKey(products, groupKey)"
-                    :data="salesByKey(products, groupKey)"
-                    :xlabels="xlabels"
-                    :ylabels="groupFilters.filter(f => f.key === groupKey)[0].values"
-                    :max="maxSales"
-                />
-            </div>
+            
+            <Row v-for="groupKey in Object.keys(this.groups)"
+                :group-key="groupKey"
+                :key="groupKey"
+                :data="salesByKey(products, groupKey)"
+                :xlabels="xlabels"
+                :ylabels="groupFilters.filter(f => f.key === groupKey)[0].values"
+                :max="maxSales"
+            />
 
             <Collapsible>
                 <Datatable :data="products" />
