@@ -3,9 +3,9 @@ import StackedBar from './StackedBar2.js'
 
 export default {
     components: { StackedBar, FilterButton },
-    props: ['filterKey','activeFilters','filters','data','xlabels','ylabels','max'],
+    props: ['filterKey','activeFilters','filters','data','xlabels','ylabels','max','focusIndex'],
     template: `
-        <div>
+        <div class="Row">
             <div class="title">{{ filterKey }}</div>
             <div class="Row__wrapper">
                 <div class="Row__left">
@@ -24,12 +24,17 @@ export default {
                         :xlabels="xlabels"
                         :ylabels="ylabels"
                         :max="max"
+                        :focus-index="focusIndex"
                     />
                 </div>
             </div>
         </div>
     `,
     css: `
+        .Row {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.15)
+        }
         .Row__wrapper {
             display: flex;
         }

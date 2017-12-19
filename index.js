@@ -73,6 +73,14 @@ new Vue({
         maxSales(products) {
             return Math.max(...this.calculateSales(products))
         },
+        focusIndex(filterKey) {
+            if (this.activeFilters[filterKey]) {
+                return this.filters
+                    .filter(f => f.key == filterKey)[0].values
+                    .findIndex(v => v == this.activeFilters[filterKey])
+            }
+            return -1
+        },
     },
     computed: {
         filters() {
@@ -109,10 +117,11 @@ new Vue({
                 :key="filterKey"
                 :active-filters="activeFilters"
                 :filters="filters"
-                :data="salesByKey(filteredProducts, filterKey)"
+                :data="salesByKey(products, filterKey)"
                 :xlabels="xlabels"
                 :ylabels="filters.filter(f => f.key === filterKey)[0].values"
-                :max="maxSales(filterIndex == 0 ? products : filteredProducts)"
+                :max="maxSales(products)"
+                :focus-index="focusIndex(filterKey)"
                 @filter="onFilter"
             />
 

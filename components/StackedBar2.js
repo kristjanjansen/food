@@ -10,6 +10,7 @@ export default {
         xlabels: { default: () => [] },
         ylabels: { default: () => [] },
         max: { default: null },
+        focusIndex: { default: -1 },
     },
     data: () => ({
         padding: 5
@@ -87,6 +88,7 @@ export default {
                                 :height="yScale(row.height)"
                                 stroke="white"
                                 fill="#F2AF29"
+                                :opacity="focusIndex > -1 ? (rowi == focusIndex ? 0.9 : 0.3) : 0.8"
                                 rx="2"
                                 ry="2"
                                 @mouseenter="onEnter(
