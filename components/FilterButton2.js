@@ -42,7 +42,7 @@ export default {
                 }"
                 v-show="activeFilters[filterKey] === filterValue"
             >
-                ⨉
+                ×
             </span>
         </span>
     </div>

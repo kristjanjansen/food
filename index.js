@@ -139,8 +139,9 @@ new Vue({
         <Btn
             v-for="(range, index) in monthRanges"
             :key="index"
-            :title="range.title + ' ' + index"
-            @click.native="onRange(index)"
+            :title="range.title"
+            @click.native="activeMonthRange = index"
+            :active="activeMonthRange === index"
         />
     </div>
 

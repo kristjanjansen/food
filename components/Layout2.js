@@ -56,7 +56,7 @@ export default {
         display: flex
     }
     .Layout__toolbar > * > * {
-        margin-right: 1rem;
+        margin-right: 0.5rem;
     }
     .Layout__main {
         padding: 1rem;
