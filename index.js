@@ -1,6 +1,7 @@
 import Layout from './components/Layout2.js'
 import Row from './components/Row.js'
 import Popup from './components/Popup.js'
+import Btn from './components/Btn.js'
 
 import Collapsible from './components/Collapsible.js'
 import Datatable from './components/Datatable.js'
@@ -15,16 +16,22 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Collapsible, Datatable },
+    components: { Layout, Row, Popup, Collapsible, Datatable, Btn },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
             header: true,
-            step: row => { this.products.push(prepareData(row.data[0])) }
+            step: row => { this.initialProducts.push(prepareData(row.data[0])) }
         })
     },
     data: () => ({
-        products: [],
+        initialProducts: [],
+        monthRanges: [
+            { title: 'Last month', value: 2 },
+            { title: 'Last 6 months', value: 6 },
+            { title: 'Last year', value: 10 },
+        ],
+        activeMonthRange: 1,
         activeFilters: {
             supplier: null,
             brand: null,
@@ -81,6 +88,9 @@ new Vue({
             }
             return -1
         },
+        onRange(value) {
+            this.activeMonthRange = value
+        }
     },
     computed: {
         filters() {
@@ -106,6 +116,12 @@ new Vue({
                 }
             })
         },
+        products() {
+            return this.initialProducts.map(product => {
+                product.sales = product.s.slice(this.monthRanges[this.activeMonthRange].value * -1)
+                return product
+            })
+        },
         filteredProducts() {
             const query = Object.keys(this.activeFilters)
                 .filter(key => this.activeFilters[key])
@@ -118,7 +134,16 @@ new Vue({
     },
     template: `
     <Layout>
-        
+    
+    <div slot="toolbar">
+        <Btn
+            v-for="(range, index) in monthRanges"
+            :key="index"
+            :title="range.title + ' ' + index"
+            @click.native="onRange(index)"
+        />
+    </div>
+
     <div slot="main">
         
         <div v-if="!products.length" class="title">Loading...</div>

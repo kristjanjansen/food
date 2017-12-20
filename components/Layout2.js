@@ -11,6 +11,9 @@ export default {
                 </div>
             </div>
         </header>
+        <aside class="Layout__toolbar">
+            <slot name="toolbar" />
+        </aside>
         <main class="Layout__main">
             <slot name="main" />
         </main>
@@ -44,6 +47,16 @@ export default {
         font-size: 32px;
         font-weight: 200;
         color: rgba(255,255,255,0.6);
+    }
+    .Layout__toolbar {
+        padding: 1rem;
+        background: black;
+    }
+    .Layout__toolbar > * {
+        display: flex
+    }
+    .Layout__toolbar > * > * {
+        margin-right: 1rem;
     }
     .Layout__main {
         padding: 1rem;
