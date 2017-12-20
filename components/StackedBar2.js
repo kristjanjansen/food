@@ -62,13 +62,14 @@ export default {
         }
     },
     methods: {
-        onEnter(title, subtitle, subsubtitle, e) {
+        onEnter(title, subtitle, subsubtitle, color, e) {
             this.$bus.$emit('showPopup', {
                 x: e.clientX,
                 y: e.clientY,
                 title,
                 subtitle,
-                subsubtitle
+                subsubtitle,
+                color
             })
         },
         onLeave() {
@@ -96,12 +97,14 @@ export default {
                                     row.height,
                                     ylabels[rowi],
                                     xlabels[coli].join(' '),
+                                    colors[rowi],
                                     $event
                                 )"
                                 @mousemove="onEnter(
                                     row.height,
                                     ylabels[rowi],
                                     xlabels[coli].join(' '),
+                                    colors[rowi],
                                     $event
                                 )"
                                 @mouseleave="onLeave"

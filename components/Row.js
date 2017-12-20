@@ -16,6 +16,7 @@ export default {
                         :filter-key="filterKey"
                         :filter-value="filterValue"
                         :active-filters="activeFilters"
+                        :color="filters.filter(f => f.key == filterKey)[0].colors[filterValueIndex]"
                     />
                 </div>
                 <div class="Row__right">

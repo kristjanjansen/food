@@ -8,10 +8,11 @@ export default {
         show: false,
         width: 150,
         height: 85,
+        color: 'rgba(0,0,0,0.3)',
         hideTimeout: null
     }),
     mounted() {
-        this.$bus.$on('showPopup', ({ x, y, title, subtitle, subsubtitle }) => {
+        this.$bus.$on('showPopup', ({ x, y, title, subtitle, subsubtitle, color }) => {
             clearTimeout(this.hideTimeout)
             this.show = true
             this.x = x - (this.width / 2)
@@ -19,6 +20,7 @@ export default {
             this.title = title
             this.subtitle = subtitle.length > 20 ? subtitle.slice(0,20) + '...' : subtitle
             this.subsubtitle = subsubtitle.length > 20 ? subsubtitle.slice(0, 20) + '...' : subsubtitle
+            this.color = color
         })
         this.$bus.$on('hidePopup', () => {
             this.hideTimeout = setTimeout(() => this.show = false, 200)
@@ -35,7 +37,7 @@ export default {
                 left: x + 'px',
                 top: y + 'px',
                 background: 'white',
-                border: '2px solid rgba(0,0,0,0.1)',
+                border: '2px solid rgba(0,0,0,0.3)',
                 padding: '10px',
                 borderRadius: '5px',
                 boxShadow: '0 0 4px rgba(0,0,0,0.05)',
@@ -47,7 +49,7 @@ export default {
                 :style="{
                     fontSize: '1.5em',
                     lineHeight: '1em',
-                    color: 'rgba(0,0,0,0.5)',
+                    color: color,
                     marginBottom: '0.1rem'
                 }"
                 v-text="title"
@@ -55,8 +57,9 @@ export default {
             <div
                 :style="{
                     fontSize: '0.85em',
-                    color: 'rgba(0,0,0,0.5)',
-                    marginBottom: '0.1rem'
+                    color: 'rgba(0,0,0,0.6)',
+                    marginBottom: '0.1rem',
+                    opacity: 0.8
                 }"
                 v-text="subtitle"
             />

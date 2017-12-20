@@ -90,7 +90,7 @@ new Vue({
                 const values = [...new Set(this.products.map(p => p[filterKey]))]
                 const color1 = d3.color(d3.schemeCategory10[filterIndex]).darker(2)
                 let color2 = d3.hsl(color1)
-                color2.h += 30
+                color2.h -= 20
                 color2 = color2.brighter(2)
                 return {
                     key: filterKey,

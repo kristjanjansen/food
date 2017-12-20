@@ -1,5 +1,5 @@
 export default {
-    props: ['filterKey', 'filterValue', 'activeFilters'],
+    props: ['filterKey', 'filterValue', 'activeFilters', 'color'],
     template: `
     <div
         class="FilterButton"
@@ -22,10 +22,19 @@ export default {
                 :style="{
                     paddingRight: '5px',
                     userSelect: 'none',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
                 }"
             >
+                <span
+                    v-if="color"
+                    :style="{
+                        color,
+                        marginRight: '5px'
+                    }"
+                >● </span>
+                <span>
                 {{ filterValue }}
+                </span>
             </span>
             <span
                 :style="{
