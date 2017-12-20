@@ -7,7 +7,7 @@ import Collapsible from './components/Collapsible.js'
 import Datatable from './components/Datatable.js'
 
 import injectCss from './utils/injectCss.js'
-import xlabels from './utils/xlabels.js'
+import xlabelValues from './utils/xlabelValues.js'
 import prepareData from './utils/prepareData.js'
 
 Vue.prototype.$bus = new Vue()
@@ -44,7 +44,7 @@ new Vue({
             cut: null,
             packed: null
         },
-        xlabels,
+        xlabelValues,
     }),
     methods: {
         calculateSales(products) {
@@ -88,9 +88,14 @@ new Vue({
             }
             return -1
         },
+        ylabels(filterKey) {
+            return this.filters
+                .filter(f => f.key === filterKey)[0]
+                .values
+        },
         onRange(value) {
             this.activeMonthRange = value
-        }
+        },
     },
     computed: {
         filters() {
@@ -131,6 +136,22 @@ new Vue({
                 }, {})
             return this.filterProducts(this.products, query)
         },
+        xlabels() {
+            return this.xlabelValues
+                .slice(this.monthRanges[this.activeMonthRange].value * -1)
+        },
+        exportedProducts() {
+            return this.filteredProducts.map(p => {
+                const product = {}
+                Object.keys(this.activeFilters).forEach(key => {
+                    product[key] = p[key]
+                })
+                product.sales = p.sales
+                return product
+//                return Object.keys(this.activeFilters)
+                   // .map(key => p[key])
+            })
+        }
     },
     template: `
     <Layout>
@@ -141,7 +162,7 @@ new Vue({
             :key="index"
             :title="range.title"
             @click.native="activeMonthRange = index"
-            :active="activeMonthRange === index"
+            :active="activeMonthRange == index"
         />
     </div>
 
@@ -160,12 +181,12 @@ new Vue({
                 :max="maxSales(filteredProducts)"
                 :focus-index="-1"
                 :xlabels="xlabels"
-                :ylabels="filters.filter(f => f.key === filterKey)[0].values"
+                :ylabels="ylabels(filterKey)"
                 @filter="onFilter"
             />
 
             <Collapsible>
-                <Datatable :data="filteredProducts" />
+                <Datatable :data="exportedProducts" />
             </Collapsible>
         </div>
 

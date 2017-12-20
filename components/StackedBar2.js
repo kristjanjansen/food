@@ -5,7 +5,8 @@ const round = (value, decimals = 0) => {
 export default {
     props: {
         data: { default: [] },
-        width: { default: 450 },
+        height: { default: 200 },
+        unitwidth: { default: 40 },
         relative: { default: false },
         xlabels: { default: () => [] },
         ylabels: { default: () => [] },
@@ -20,8 +21,8 @@ export default {
         maxValue() {
             return this.relative ? this.height : this.max
         },
-        height() {
-            return this.width / 2
+        width() {
+            return this.data[0].length * this.unitwidth
         },
         xScale() {
             return d3.scaleLinear()
