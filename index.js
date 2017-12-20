@@ -28,10 +28,12 @@ new Vue({
         initialProducts: [],
         monthRanges: [
             { title: 'Last month', value: 2 },
-            { title: 'Last 6 months', value: 6 },
+            { title: 'Last quater', value: 3 },
             { title: 'Last year', value: 10 },
+            { title: 'Last two years', value: 24 },
+            { title: 'Last three years', value: 36 },
         ],
-        activeMonthRange: 1,
+        activeMonthRange: 2,
         activeFilters: {
             supplier: null,
             brand: null,
@@ -198,16 +200,4 @@ new Vue({
 
     </Layout>
     `,
-    css: `
-        .title {
-            font-size: 1.5rem;
-            margin: 2rem 0 1.5rem 0.5rem;
-            text-transform: capitalize;
-        }
-        .subtitle {
-            color: rgba(0,0,0,0.5);
-            font-size: 1rem;
-            margin-bottom: 2rem;
-        }
-    `
 })

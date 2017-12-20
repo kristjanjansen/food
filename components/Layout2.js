@@ -21,6 +21,22 @@ export default {
     </div>
     `,
     css: `
+    
+    /* Generic util classes */
+
+    .title {
+        font-size: 1.5rem;
+        margin: 2rem 0 1rem 0.5rem;
+        text-transform: capitalize;
+    }
+    .subtitle {
+        color: rgba(0,0,0,0.5);
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Layout classes */
+
     .Layout__header {
         display: flex;
     }
@@ -61,7 +77,5 @@ export default {
     .Layout__main {
         padding: 1rem;
     }
-
-    
     `
 }
