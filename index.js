@@ -85,12 +85,19 @@ new Vue({
     computed: {
         filters() {
             return Object.keys(this.activeFilters).map((filterKey, filterIndex) => {
+                // Converting values to Set and back to array
+                // makes the values unique
+                const values = [...new Set(this.products.map(p => p[filterKey]))]
                 return {
                     key: filterKey,
-                    // Converting values to Set and back to array
-                    // makes the values unique
-                    values: [...new Set(this.products.map(p => p[filterKey]))],
-                    color: d3.schemeCategory10[filterIndex]
+                    values: values,
+                    colors: values.map((v, index) => {
+                        return d3.scaleLinear()
+                            .domain([0, values.length - 1])
+                            .range([d3.schemeCategory10[filterIndex], 'white'])
+                            (index)
+                    })
+                            
                     
                 }
             })
@@ -119,9 +126,9 @@ new Vue({
                 :key="filterKey"
                 :active-filters="activeFilters"
                 :filters="filters"
-                :data="salesByKey(filterIndex == 0 ? products : filteredProducts, filterKey)"
-                :max="maxSales(filterIndex == 0 ? products : filteredProducts)"
-                :focus-index="filterIndex == 0 ? focusIndex(filterKey) : -1"
+                :data="salesByKey(filteredProducts, filterKey)"
+                :max="maxSales(filteredProducts)"
+                :focus-index="-1"
                 :xlabels="xlabels"
                 :ylabels="filters.filter(f => f.key === filterKey)[0].values"
                 @filter="onFilter"
