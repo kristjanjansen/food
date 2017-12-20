@@ -88,13 +88,17 @@ new Vue({
                 // Converting values to Set and back to array
                 // makes the values unique
                 const values = [...new Set(this.products.map(p => p[filterKey]))]
+                const color1 = d3.color(d3.schemeCategory10[filterIndex]).darker(2)
+                let color2 = d3.hsl(color1)
+                color2.h += 30
+                color2 = color2.brighter(2)
                 return {
                     key: filterKey,
                     values: values,
                     colors: values.map((v, index) => {
                         return d3.scaleLinear()
                             .domain([0, values.length - 1])
-                            .range([d3.schemeCategory10[filterIndex], 'white'])
+                            .range([color1, color2])
                             (index)
                     })
                             
