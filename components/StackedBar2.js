@@ -15,8 +15,12 @@ export default {
         colors: { default: Array(50).fill('#ddd') }
     },
     data: () => ({
-        padding: 5
+        padding: 5,
+        showTrendline: false
     }),
+    mounted() {
+        this.$bus.$on('showTrendline', showTrendline => this.showTrendline = showTrendline)
+    },
     computed: {
         maxValue() {
             return this.relative ? this.height : this.max
@@ -60,6 +64,20 @@ export default {
                 return ['0', Math.floor(this.maxValue / 1000) + 'k']
             }
             return ['0', this.maxValue]
+        },
+        firstBarY() {
+            const lastRow = this.columns[0].slice(-1)[0]
+            return lastRow.y + lastRow.height
+        },
+        lastBarY() {
+            const lastRow = this.columns.slice(-1)[0].slice(-1)[0]
+            return lastRow.y + lastRow.height
+        },
+        trendline() {
+            return [
+                { x: 1, y: this.firstBarY },
+                { x: this.columns.length, y: this.lastBarY }
+            ]
         }
     },
     methods: {
@@ -80,8 +98,13 @@ export default {
     template: `
         <div>
             <svg :width="width + 50" :height="height + 50">
-                <g :transform="'translate(0,' + height + ') scale(1,-1)'">
-                    <g v-for="(col, coli) in columns">
+                <g
+                    :transform="'translate(0,' + height + ') scale(1,-1)'"
+                >
+                    <g
+                        v-for="(col, coli) in columns"
+                        :opacity="showTrendline ? 0.85 : 1"
+                    >
                         <g v-for="(row, rowi) in col">
                             <rect
                                 :key="rowi"
@@ -113,6 +136,43 @@ export default {
                         </g>
                     </g>
 
+                    <!-- Trendline -->
+                    
+                    <g v-if="showTrendline">
+                    
+                        <line
+                            :x1="xScale(trendline[0].x) + 26"
+                            :y1="yScale(trendline[0].y)"
+                            :x2="xScale(trendline[1].x) + 26"
+                            :y2="yScale(trendline[1].y)"
+                            stroke-width="4"
+                            stroke="white"
+                        />
+                        <circle
+                            v-for="trend in trendline"
+                            :cx="xScale(trend.x) + 26"
+                            :cy="yScale(trend.y)"
+                            r="5"
+                            fill="white"
+                        />
+                        <circle
+                            v-for="trend in trendline"
+                            :cx="xScale(trend.x) + 26"
+                            :cy="yScale(trend.y)"
+                            r="3"
+                            fill="rgb(150,150,150)"
+                        />
+                        <line
+                            :x1="xScale(trendline[0].x) + 26"
+                            :y1="yScale(trendline[0].y)"
+                            :x2="xScale(trendline[1].x) + 26"
+                            :y2="yScale(trendline[1].y)"
+                            stroke-width="1"
+                            stroke="rgb(150,150,150)"
+                        />
+
+                    </g>
+
                 </g>
 
                 <g v-for="r in [0,1]">
@@ -137,6 +197,8 @@ export default {
                     font-size="13px"
                     v-text="yLabels[i]"
                 />
+
+                
             </svg>
         </div>
     `

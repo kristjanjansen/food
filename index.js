@@ -32,8 +32,8 @@ new Vue({
             { title: 'Last month', value: 2 },
             { title: 'Last quater', value: 3 },
             { title: 'Last year', value: 10 },
-            { title: 'Last two years', value: 24 },
-            { title: 'Last three years', value: 36 },
+            { title: 'Last 2y', value: 24 },
+            { title: 'Last 3y', value: 36 },
         ],
         activeMonthRange: 2,
         activeFilters: {
@@ -50,6 +50,7 @@ new Vue({
         },
         xlabelValues,
         showTables: false,
+        showTrendline: false
     }),
     methods: {
         calculateSales(products) {
@@ -175,6 +176,11 @@ new Vue({
                 />
             </div>
             <div slot="right">
+                <Btn
+                    :title="showTrendline ? 'Hide trendline' : 'Show trendline'"
+                    @click.native="showTrendline = !showTrendline; $bus.$emit('showTrendline', showTrendline)"
+                    :active="true"
+                />
                 <Btn
                     :title="showTables ? 'Show in graphs' : 'Show in table'"
                     :active="true"
