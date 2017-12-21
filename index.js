@@ -50,7 +50,8 @@ new Vue({
         },
         xlabelValues,
         showTables: false,
-        showTrendline: false
+        showTrendline: false,
+        showRelative: false
     }),
     methods: {
         calculateSales(products) {
@@ -175,12 +176,19 @@ new Vue({
                     :active="activeMonthRange == index"
                 />
             </div>
-            <div slot="right">
+            <div slot="center" v-if="!showTables">
                 <Btn
                     :title="showTrendline ? 'Hide trendline' : 'Show trendline'"
                     @click.native="showTrendline = !showTrendline; $bus.$emit('showTrendline', showTrendline)"
                     :active="true"
                 />
+                <Btn
+                    :title="showRelative ? 'Show absolute change' : 'Show relative change'"
+                    @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
+                    :active="true"
+                />
+            </div>
+            <div slot="right">            
                 <Btn
                     :title="showTables ? 'Show in graphs' : 'Show in table'"
                     :active="true"

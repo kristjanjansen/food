@@ -20,6 +20,7 @@ export default {
     }),
     mounted() {
         this.$bus.$on('showTrendline', showTrendline => this.showTrendline = showTrendline)
+        this.$bus.$on('showRelative', showRelative => this.relative = showRelative)
     },
     computed: {
         maxValue() {
@@ -152,14 +153,14 @@ export default {
                             v-for="trend in trendline"
                             :cx="xScale(trend.x) + 26"
                             :cy="yScale(trend.y)"
-                            r="5"
+                            r="4"
                             fill="white"
                         />
                         <circle
                             v-for="trend in trendline"
                             :cx="xScale(trend.x) + 26"
                             :cy="yScale(trend.y)"
-                            r="3"
+                            r="2"
                             fill="rgb(150,150,150)"
                         />
                         <line

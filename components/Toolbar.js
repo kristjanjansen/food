@@ -2,6 +2,7 @@ export default {
     template: `
         <div class="Toolbar">
             <slot name="left" />
+            <slot name="center" />
             <slot name="right" />
         </div>
     `,
