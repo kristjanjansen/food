@@ -1,6 +1,6 @@
 export default {
     template: `
-    <div>
+    <div class="Layout">
         <header class="Layout__header">
             <div class="Layout__headerLeft">
                 Codename
@@ -25,14 +25,23 @@ export default {
     /* Generic util classes */
 
     .title {
-        font-size: 1.5rem;
-        margin: 2rem 0 1rem 0.5rem;
+        font-size: 1.2rem;
+        margin: 0 0 1rem 0;
         text-transform: capitalize;
     }
     .subtitle {
         color: rgba(0,0,0,0.5);
         font-size: 1rem;
         margin-bottom: 2rem;
+    }
+
+    @keyframes rotation {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(359deg);
+		}
     }
 
     /* Layout classes */
@@ -63,19 +72,6 @@ export default {
         font-size: 32px;
         font-weight: 200;
         color: rgba(255,255,255,0.6);
-    }
-    .Layout__toolbar {
-        padding: 1rem;
-        background: black;
-    }
-    .Layout__toolbar > * {
-        display: flex
-    }
-    .Layout__toolbar > * > * {
-        margin-right: 0.5rem;
-    }
-    .Layout__main {
-        padding: 1rem;
     }
     `
 }

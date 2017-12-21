@@ -34,7 +34,7 @@ export default {
     `,
     css: `
         .Row {
-            margin-bottom: 1rem;
+            padding: 2rem;
             border-bottom: 1px solid rgba(0,0,0,0.2)
         }
         .Row__wrapper {

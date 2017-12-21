@@ -2,6 +2,8 @@ import Layout from './components/Layout2.js'
 import Row from './components/Row.js'
 import Popup from './components/Popup.js'
 import Btn from './components/Btn.js'
+import Toolbar from './components/Toolbar.js'
+import Loading from './components/Loading.js'
 
 import Collapsible from './components/Collapsible.js'
 import Datatable from './components/Datatable.js'
@@ -16,7 +18,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Collapsible, Datatable, Btn },
+    components: { Layout, Row, Popup, Collapsible, Datatable, Btn, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
@@ -150,27 +152,33 @@ new Vue({
                 })
                 product.sales = p.sales
                 return product
-//                return Object.keys(this.activeFilters)
-                   // .map(key => p[key])
             })
         }
     },
     template: `
     <Layout>
-    
-    <div slot="toolbar">
-        <Btn
-            v-for="(range, index) in monthRanges"
-            :key="index"
-            :title="range.title"
-            @click.native="activeMonthRange = index"
-            :active="activeMonthRange == index"
-        />
-    </div>
 
     <div slot="main">
         
-        <div v-if="!products.length" class="title">Loading...</div>
+        <Loading v-if="!products.length" />
+
+        <Toolbar v-if="products.length">
+            <div slot="left">
+                <Btn
+                    v-for="(range, index) in monthRanges"
+                    :key="index"
+                    :title="range.title"
+                    @click.native="activeMonthRange = index"
+                    :active="activeMonthRange == index"
+                />
+            </div>
+            <div slot="right">
+                <Btn
+                    title="Show tables"
+                    @click.native=""
+                />
+            </div>
+        </Toolbar>
         
         <div v-if="products.length">
             
