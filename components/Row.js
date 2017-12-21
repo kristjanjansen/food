@@ -41,7 +41,8 @@ export default {
             display: flex;
         }
         .Row__left {
-            width: 300px;
+            width: 20vw;            
+            min-width: 300px;
             overflow-y: scroll;
             max-height: 250px;
         }

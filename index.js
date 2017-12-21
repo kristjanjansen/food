@@ -49,6 +49,7 @@ new Vue({
             packed: null
         },
         xlabelValues,
+        showTables: false,
     }),
     methods: {
         calculateSales(products) {
@@ -144,7 +145,7 @@ new Vue({
             return this.xlabelValues
                 .slice(this.monthRanges[this.activeMonthRange].value * -1)
         },
-        exportedProducts() {
+        tableProducts() {
             return this.filteredProducts.map(p => {
                 const product = {}
                 Object.keys(this.activeFilters).forEach(key => {
@@ -153,6 +154,7 @@ new Vue({
                 product.sales = p.sales
                 return product
             })
+            .slice(0, 500)
         }
     },
     template: `
@@ -160,7 +162,7 @@ new Vue({
 
     <div slot="main">
         
-        <Loading v-if="!products.length" />
+        <Loading v-if="!products.length && !showTables" />
 
         <Toolbar v-if="products.length">
             <div slot="left">
@@ -174,13 +176,14 @@ new Vue({
             </div>
             <div slot="right">
                 <Btn
-                    title="Show tables"
-                    @click.native=""
+                    :title="showTables ? 'Show in graphs' : 'Show in table'"
+                    :active="true"
+                    @click.native="showTables = !showTables"
                 />
             </div>
         </Toolbar>
         
-        <div v-if="products.length">
+        <div v-if="products.length && !showTables">
             
             <Row v-for="(filterKey, filterIndex) in Object.keys(this.activeFilters)"
                 :filter-key="filterKey"
@@ -195,10 +198,9 @@ new Vue({
                 @filter="onFilter"
             />
 
-            <Collapsible>
-                <Datatable :data="exportedProducts" />
-            </Collapsible>
         </div>
+
+        <Datatable v-if="products.length && showTables" :data="tableProducts" />
 
     </div>
     
