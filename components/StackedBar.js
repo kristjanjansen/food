@@ -1,4 +1,4 @@
-import round from '../utils/round.js'
+import { round, formatSale } from '../utils/utils.js'
 
 export default {
     props: {
@@ -59,9 +59,6 @@ export default {
             if (this.relative) {
                 return ['0%', '100%']
             }
-            if (this.maxValue > 1000) {
-                return ['0', Math.floor(this.maxValue / 1000) + 'k']
-            }
             return ['0', this.maxValue]
         },
         firstBarY() {
@@ -77,9 +74,13 @@ export default {
                 { x: 1, y: this.firstBarY },
                 { x: this.columns.length, y: this.lastBarY }
             ]
+        },
+        yTicks() {
+            return this.yScale.ticks(3)
         }
     },
     methods: {
+        formatSale,
         onEnter(title, subtitle, subsubtitle, color, e) {
             this.$bus.$emit('showPopup', {
                 x: e.clientX,
@@ -188,6 +189,16 @@ export default {
                 </g>
 
                 <text
+                    v-for="tick in yTicks"
+                    :x="40"
+                    :y="height - yScale(tick) + 10"
+                    text-anchor="end"
+                    opacity="0.3"
+                    font-size="13px"
+                    v-text="formatSale(parseFloat(tick))"
+                />
+
+                <!--text
                     v-for="(y,i) in [height,10]"
                     x="40"
                     :y="y"
@@ -195,7 +206,7 @@ export default {
                     text-anchor="end"
                     font-size="13px"
                     v-text="yLabels[i]"
-                />
+                /-->
 
                 
             </svg>

@@ -31,7 +31,7 @@ export default {
                         color,
                         marginRight: '5px'
                     }"
-                >● </span>
+                >⬤ </span>
                 <span>
                 {{ filterValue }}
                 </span>

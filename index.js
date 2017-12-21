@@ -108,10 +108,10 @@ new Vue({
                 // Converting values to Set and back to array
                 // makes the values unique
                 const values = [...new Set(this.products.map(p => p[filterKey]))]
-                const color1 = d3.color(d3.schemeCategory10[filterIndex]).darker(2)
+                const color1 = d3.color(d3.schemeCategory10[filterIndex]).darker(1)
                 let color2 = d3.hsl(color1)
-                color2.h -= 20
-                color2 = color2.brighter(2)
+                color2.h -= 40
+                color2 = color2.brighter(1)
                 return {
                     key: filterKey,
                     values: values,

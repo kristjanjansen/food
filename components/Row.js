@@ -44,7 +44,8 @@ export default {
             width: 20vw;            
             min-width: 300px;
             overflow-y: scroll;
-            max-height: 250px;
+            max-height: 270px;
+            padding-right: 1rem;
         }
         .Row__right {
             width: 100%;
