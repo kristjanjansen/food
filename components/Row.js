@@ -1,5 +1,5 @@
-import FilterButton from './FilterButton2.js'
-import StackedBar from './StackedBar2.js'
+import FilterButton from './FilterButton.js'
+import StackedBar from './StackedBar.js'
 
 export default {
     components: { StackedBar, FilterButton },
@@ -34,14 +34,15 @@ export default {
     `,
     css: `
         .Row {
-            margin-bottom: 1rem;
+            padding: 2rem;
             border-bottom: 1px solid rgba(0,0,0,0.2)
         }
         .Row__wrapper {
             display: flex;
         }
         .Row__left {
-            width: 300px;
+            width: 20vw;            
+            min-width: 300px;
             overflow-y: scroll;
             max-height: 250px;
         }

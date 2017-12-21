@@ -15,6 +15,7 @@ export default {
         }
     },
     template: `
+     <div class="Datatable">
         <table>
             <tr>
                 <th v-for="key in keys">
@@ -34,8 +35,12 @@ export default {
                 </td>
             </tr>
         </table>
+    </div>
     `,
     css: `
+        .Datatable {
+            padding: 2rem;
+        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -52,7 +57,7 @@ export default {
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         td {
-            padding: 0.15rem rem 0.15rem 0;
+            padding: 0.15rem 0.5rem 0.15rem 0.25rem;
             color: rgba(0,0,0,0.5);
         }
     `

@@ -1,12 +1,13 @@
-import Layout from './components/Layout2.js'
+import Layout from './components/Layout.js'
 import Row from './components/Row.js'
 import Popup from './components/Popup.js'
-
-import Collapsible from './components/Collapsible.js'
+import Btn from './components/Btn.js'
+import Toolbar from './components/Toolbar.js'
+import Loading from './components/Loading.js'
 import Datatable from './components/Datatable.js'
 
 import injectCss from './utils/injectCss.js'
-import xlabels from './utils/xlabels.js'
+import xlabelValues from './utils/xlabelValues.js'
 import prepareData from './utils/prepareData.js'
 
 Vue.prototype.$bus = new Vue()
@@ -15,16 +16,24 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Collapsible, Datatable },
+    components: { Layout, Row, Popup, Datatable, Btn, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
             header: true,
-            step: row => { this.products.push(prepareData(row.data[0])) }
+            step: row => { this.initialProducts.push(prepareData(row.data[0])) }
         })
     },
     data: () => ({
-        products: [],
+        initialProducts: [],
+        monthRanges: [
+            { title: 'Last month', value: 2 },
+            { title: 'Last quater', value: 3 },
+            { title: 'Last year', value: 10 },
+            { title: 'Last 2y', value: 24 },
+            { title: 'Last 3y', value: 36 },
+        ],
+        activeMonthRange: 2,
         activeFilters: {
             supplier: null,
             brand: null,
@@ -37,7 +46,10 @@ new Vue({
             cut: null,
             packed: null
         },
-        xlabels,
+        xlabelValues,
+        showTables: false,
+        showTrendline: false,
+        showRelative: false
     }),
     methods: {
         calculateSales(products) {
@@ -81,6 +93,14 @@ new Vue({
             }
             return -1
         },
+        ylabels(filterKey) {
+            return this.filters
+                .filter(f => f.key === filterKey)[0]
+                .values
+        },
+        onRange(value) {
+            this.activeMonthRange = value
+        },
     },
     computed: {
         filters() {
@@ -106,6 +126,12 @@ new Vue({
                 }
             })
         },
+        products() {
+            return this.initialProducts.map(product => {
+                product.sales = product.s.slice(this.monthRanges[this.activeMonthRange].value * -1)
+                return product
+            })
+        },
         filteredProducts() {
             const query = Object.keys(this.activeFilters)
                 .filter(key => this.activeFilters[key])
@@ -115,15 +141,61 @@ new Vue({
                 }, {})
             return this.filterProducts(this.products, query)
         },
+        xlabels() {
+            return this.xlabelValues
+                .slice(this.monthRanges[this.activeMonthRange].value * -1)
+        },
+        tableProducts() {
+            return this.filteredProducts.map(p => {
+                const product = {}
+                Object.keys(this.activeFilters).forEach(key => {
+                    product[key] = p[key]
+                })
+                product.sales = p.sales
+                return product
+            })
+            .slice(0, 500)
+        }
     },
     template: `
     <Layout>
-        
+
     <div slot="main">
         
-        <div v-if="!products.length" class="title">Loading...</div>
+        <Loading v-if="!products.length && !showTables" />
+
+        <Toolbar v-if="products.length">
+            <div slot="left">
+                <Btn
+                    v-for="(range, index) in monthRanges"
+                    :key="index"
+                    :title="range.title"
+                    @click.native="activeMonthRange = index"
+                    :active="activeMonthRange == index"
+                />
+            </div>
+            <div slot="center" v-if="!showTables">
+                <Btn
+                    :title="showTrendline ? 'Hide trendline' : 'Show trendline'"
+                    @click.native="showTrendline = !showTrendline; $bus.$emit('showTrendline', showTrendline)"
+                    :active="true"
+                />
+                <Btn
+                    :title="showRelative ? 'Show absolute change' : 'Show relative change'"
+                    @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
+                    :active="true"
+                />
+            </div>
+            <div slot="right">            
+                <Btn
+                    :title="showTables ? 'Show in graphs' : 'Show in table'"
+                    :active="true"
+                    @click.native="showTables = !showTables"
+                />
+            </div>
+        </Toolbar>
         
-        <div v-if="products.length">
+        <div v-if="products.length && !showTables">
             
             <Row v-for="(filterKey, filterIndex) in Object.keys(this.activeFilters)"
                 :filter-key="filterKey"
@@ -134,14 +206,13 @@ new Vue({
                 :max="maxSales(filteredProducts)"
                 :focus-index="-1"
                 :xlabels="xlabels"
-                :ylabels="filters.filter(f => f.key === filterKey)[0].values"
+                :ylabels="ylabels(filterKey)"
                 @filter="onFilter"
             />
 
-            <Collapsible>
-                <Datatable :data="filteredProducts" />
-            </Collapsible>
         </div>
+
+        <Datatable v-if="products.length && showTables" :data="tableProducts" />
 
     </div>
     
@@ -151,16 +222,4 @@ new Vue({
 
     </Layout>
     `,
-    css: `
-        .title {
-            font-size: 1.5rem;
-            margin: 2rem 0 1.5rem 0.5rem;
-            text-transform: capitalize;
-        }
-        .subtitle {
-            color: rgba(0,0,0,0.5);
-            font-size: 1rem;
-            margin-bottom: 2rem;
-        }
-    `
 })
