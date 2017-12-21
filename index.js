@@ -1,11 +1,9 @@
-import Layout from './components/Layout2.js'
+import Layout from './components/Layout.js'
 import Row from './components/Row.js'
 import Popup from './components/Popup.js'
 import Btn from './components/Btn.js'
 import Toolbar from './components/Toolbar.js'
 import Loading from './components/Loading.js'
-
-import Collapsible from './components/Collapsible.js'
 import Datatable from './components/Datatable.js'
 
 import injectCss from './utils/injectCss.js'
@@ -18,7 +16,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Collapsible, Datatable, Btn, Toolbar, Loading },
+    components: { Layout, Row, Popup, Datatable, Btn, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,

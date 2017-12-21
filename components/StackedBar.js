@@ -1,67 +1,41 @@
-const round = (value, decimals = 0) => {
-    return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals)
-}
+import round from '../utils/round.js'
 
 export default {
     props: {
         data: { default: [] },
-        width: { default: 450 },
+        height: { default: 200 },
+        unitwidth: { default: 40 },
         relative: { default: false },
-        padding: { default: 5 },
-        colors: { default: () => [] },
-        colori: { default: 0 },
         xlabels: { default: () => [] },
         ylabels: { default: () => [] },
         max: { default: null },
-        focusi: { default: null }
+        focusIndex: { default: -1 },
+        colors: { default: Array(50).fill('#ddd') }
     },
     data: () => ({
-        gradientStops: [
-            ['#FFA654','#FFDFC1'],
-            ['#C48F27','#E8B44C'],
-            ['#1C5F93','#59B2F7'],
-            ['#2E5266','#CBD0D3'],
-            ['#2C1170','#B2ABC6'],
-            ['#7A5568','#E2D4B7'],
-            ['#C43E3E','#FFC7B5'],
-        ]
+        padding: 5,
+        showTrendline: false
     }),
+    mounted() {
+        this.$bus.$on('showTrendline', showTrendline => this.showTrendline = showTrendline)
+        this.$bus.$on('showRelative', showRelative => this.relative = showRelative)
+    },
     computed: {
         maxValue() {
-            // function getMax(a){
-            //     return Math.max(...a.map(e => Array.isArray(e) ? getMax(e) : e))
-            // }
             return this.relative ? this.height : this.max
         },
-        height() {
-            return this.width / 2
+        width() {
+            return this.data[0].length * this.unitwidth
         },
         xScale() {
             return d3.scaleLinear()
-                .domain([0,this.columns.length])
-                .range([this.padding,this.width])
+                .domain([0, this.columns.length])
+                .range([this.padding, this.width])
         },
         yScale() {
             return d3.scaleLinear()
-                .domain([0,this.maxValue])
-                .range([0,this.height])
-        },
-        defaultColors() {
-            return d3.scaleLinear()
-                .domain([0,this.columns[0].length-1])
-                .range(['#9B9382','#E2D4B7'])
-        },
-        gradients() {
-            return this.gradientStops.map(stops => {
-                return Array(this.columns[0].length)
-                    .fill(0)
-                    .map((_,index) => {
-                        return d3.scaleLinear()
-                            .domain([0,this.columns[0].length - 1])
-                            .range(stops)
-                            (index)
-                    })
-            })
+                .domain([0, this.maxValue])
+                .range([0, this.height])
         },
         columns() {
             return _.zip(...this.data)
@@ -86,19 +60,34 @@ export default {
                 return ['0%', '100%']
             }
             if (this.maxValue > 1000) {
-                return ['0',Math.floor(this.maxValue / 1000) + 'k']
+                return ['0', Math.floor(this.maxValue / 1000) + 'k']
             }
-            return ['0',this.maxValue]
+            return ['0', this.maxValue]
+        },
+        firstBarY() {
+            const lastRow = this.columns[0].slice(-1)[0]
+            return lastRow.y + lastRow.height
+        },
+        lastBarY() {
+            const lastRow = this.columns.slice(-1)[0].slice(-1)[0]
+            return lastRow.y + lastRow.height
+        },
+        trendline() {
+            return [
+                { x: 1, y: this.firstBarY },
+                { x: this.columns.length, y: this.lastBarY }
+            ]
         }
     },
     methods: {
-        onEnter(title, subtitle, subsubtitle, e) {
+        onEnter(title, subtitle, subsubtitle, color, e) {
             this.$bus.$emit('showPopup', {
                 x: e.clientX,
                 y: e.clientY,
                 title,
                 subtitle,
-                subsubtitle
+                subsubtitle,
+                color
             })
         },
         onLeave() {
@@ -108,8 +97,13 @@ export default {
     template: `
         <div>
             <svg :width="width + 50" :height="height + 50">
-                <g :transform="'translate(0,' + height + ') scale(1,-1)'">
-                    <g v-for="(col, coli) in columns">
+                <g
+                    :transform="'translate(0,' + height + ') scale(1,-1)'"
+                >
+                    <g
+                        v-for="(col, coli) in columns"
+                        :opacity="showTrendline ? 0.85 : 1"
+                    >
                         <g v-for="(row, rowi) in col">
                             <rect
                                 :key="rowi"
@@ -117,26 +111,65 @@ export default {
                                 :y="yScale(row.y)"
                                 :width="xScale(1) - (padding * 3)"
                                 :height="yScale(row.height)"
-                                :opacity="focusi > -1 ? (rowi == focusi ? 0.9 : 0.3) : 0.8"
                                 stroke="white"
-                                :fill="colors.length ? colors[rowi] : defaultColors(rowi)"
+                                :fill="colors[rowi]"
+                                :opacity="focusIndex > -1 ? (rowi == focusIndex ? 0.9 : 0.3) : 0.8"
                                 rx="2"
                                 ry="2"
                                 @mouseenter="onEnter(
                                     row.height,
                                     ylabels[rowi],
                                     xlabels[coli].join(' '),
+                                    colors[rowi],
                                     $event
                                 )"
                                 @mousemove="onEnter(
                                     row.height,
                                     ylabels[rowi],
                                     xlabels[coli].join(' '),
+                                    colors[rowi],
                                     $event
                                 )"
                                 @mouseleave="onLeave"
                             />
                         </g>
+                    </g>
+
+                    <!-- Trendline -->
+                    
+                    <g v-if="showTrendline">
+                    
+                        <line
+                            :x1="xScale(trendline[0].x) + 26"
+                            :y1="yScale(trendline[0].y)"
+                            :x2="xScale(trendline[1].x) + 26"
+                            :y2="yScale(trendline[1].y)"
+                            stroke-width="4"
+                            stroke="white"
+                        />
+                        <circle
+                            v-for="trend in trendline"
+                            :cx="xScale(trend.x) + 26"
+                            :cy="yScale(trend.y)"
+                            r="4"
+                            fill="white"
+                        />
+                        <circle
+                            v-for="trend in trendline"
+                            :cx="xScale(trend.x) + 26"
+                            :cy="yScale(trend.y)"
+                            r="2"
+                            fill="rgb(150,150,150)"
+                        />
+                        <line
+                            :x1="xScale(trendline[0].x) + 26"
+                            :y1="yScale(trendline[0].y)"
+                            :x2="xScale(trendline[1].x) + 26"
+                            :y2="yScale(trendline[1].y)"
+                            stroke-width="1"
+                            stroke="rgb(150,150,150)"
+                        />
+
                     </g>
 
                 </g>
@@ -163,6 +196,8 @@ export default {
                     font-size="13px"
                     v-text="yLabels[i]"
                 />
+
+                
             </svg>
         </div>
     `

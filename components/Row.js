@@ -1,5 +1,5 @@
-import FilterButton from './FilterButton2.js'
-import StackedBar from './StackedBar2.js'
+import FilterButton from './FilterButton.js'
+import StackedBar from './StackedBar.js'
 
 export default {
     components: { StackedBar, FilterButton },
