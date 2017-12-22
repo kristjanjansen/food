@@ -3,6 +3,7 @@ import Row from './components/Row.js'
 import Popup from './components/Popup.js'
 import Search from './components/Search.js'
 import Btn from './components/Btn.js'
+import Toggle from './components/Toggle.js'
 import Toolbar from './components/Toolbar.js'
 import Loading from './components/Loading.js'
 import Datatable from './components/Datatable.js'
@@ -18,7 +19,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Datatable, Search, Btn, Toolbar, Loading },
+    components: { Layout, Row, Popup, Datatable, Search, Btn, Toggle, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
@@ -161,6 +162,7 @@ new Vue({
                 <Search
                     title="Search"
                 />
+                <Toggle :enabled="showTrendline" @click.native="showTrendline = !showTrendline" />
             </div>
             <div slot="center">
                 <Btn
