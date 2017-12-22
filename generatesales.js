@@ -24,8 +24,8 @@ any = items => items[~~(items.length * Math.random())]
 
 fixcase = string => string.split(' ').map(s => (s.slice(0, 1).toUpperCase() + s.slice(1).toLowerCase())).join(' ')
 
-const generatePrices = () => {
-   return Array(3 * 12).fill(0).map(() => {
+const generateSales = () => {
+   return Array(6 * 12).fill(0).map(() => {
         return round(between(100, 100000))
     })
 }
@@ -103,9 +103,9 @@ var csvStream = csv({headers : true})
                         r.chain = chain
                         r.location = location
                         r.type = type
-                        const prices = generatePrices()
-                        prices.forEach((price,i) => {
-                            r['s' + (i + 1)] = prices[i]
+                        const sales = generateSales()
+                        sales.forEach((price,i) => {
+                            r['s' + (i + 1)] = sales[i]
                         })
                         csvWriteStream.write(r)
                     })

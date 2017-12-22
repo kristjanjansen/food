@@ -3,9 +3,10 @@ import { round, formatSale } from '../utils/utils.js'
 export default {
     props: {
         data: { default: [] },
-        height: { default: 200 },
-        unitwidth: { default: 40 },
         relative: { default: false },
+        unitwidth: { default: 40 },
+        maxwidth: { default: 1400 },
+        height: { default: 200 },
         xlabels: { default: () => [] },
         ylabels: { default: () => [] },
         max: { default: null },
@@ -25,7 +26,7 @@ export default {
             return this.relative ? this.height : this.max
         },
         width() {
-            return this.data[0].length * this.unitwidth
+            return Math.min(this.data[0].length * this.unitwidth, this.maxwidth)
         },
         xScale() {
             return d3.scaleLinear()
@@ -175,7 +176,9 @@ export default {
 
                 </g>
 
-                <g v-for="r in [0,1]">
+                <!-- X axis labels -->
+
+                <g v-if="columns.length < 33" v-for="r in [0,1]">
                     <text
                         v-for="(label, labeli) in xlabels"
                         :x="xScale(labeli) + (xScale(1) * 0.4) + 50"
@@ -187,6 +190,8 @@ export default {
                         v-text="label[r]"
                     />
                 </g>
+
+                <!-- Y axis labels -->
 
                 <text
                     v-for="tick in yTicks"

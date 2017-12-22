@@ -22,8 +22,17 @@ export default {
     `,
     css: `
     
-    /* Generic util classes */
+    /* Generic classes */
 
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Barlow', monospace;
+        font-size: 16px;
+        margin: 0;
+        color: gray;
+    }
     .title {
         font-size: 1.2rem;
         margin: 0 0 1rem 0;
@@ -35,6 +44,14 @@ export default {
         margin-bottom: 2rem;
     }
 
+    /* Transitions and animations */
+    
+    .fade-enter-active, .fade-leave-active {
+      transition: all 0.2s ease;
+    }
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
+    }
     @keyframes rotation {
 		from {
 			transform: rotate(0deg);

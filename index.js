@@ -27,11 +27,10 @@ new Vue({
     data: () => ({
         initialProducts: [],
         monthRanges: [
-            { title: 'Last month', value: 2 },
-            { title: 'Last quater', value: 3 },
-            { title: 'Last year', value: 10 },
-            { title: 'Last 2y', value: 24 },
-            { title: 'Last 3y', value: 36 },
+            { title: 'Last week', value: 2 },
+            { title: 'Last 4 weeks', value: 4 },
+            { title: 'Last 27 weeks', value: 27 },
+            { title: 'Last 54 weeks', value: 54 },
         ],
         activeMonthRange: 3,
         activeFilters: {
@@ -167,6 +166,11 @@ new Vue({
         <Toolbar v-if="products.length">
             <div slot="left">
                 <Btn
+                    title="Search"
+                />
+            </div>
+            <div slot="center">
+                <Btn
                     v-for="(range, index) in monthRanges"
                     :key="index"
                     :title="range.title"
@@ -184,9 +188,7 @@ new Vue({
                     :title="showRelative ? 'Show absolute change' : 'Show relative change'"
                     @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
                     :active="true"
-                />
-            </div>
-            <div slot="right">            
+                />       
                 <Btn
                     :title="showTables ? 'Show in graphs' : 'Show in table'"
                     :active="true"

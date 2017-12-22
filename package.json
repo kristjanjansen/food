@@ -3,5 +3,5 @@
   "private": "true",
   "dependencies": {
     "fast-csv": "^2.4.1"
-  },
+  }
 }
