@@ -1,6 +1,7 @@
 import Layout from './components/Layout.js'
 import Row from './components/Row.js'
 import Popup from './components/Popup.js'
+import Search from './components/Search.js'
 import Btn from './components/Btn.js'
 import Toolbar from './components/Toolbar.js'
 import Loading from './components/Loading.js'
@@ -17,7 +18,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Datatable, Btn, Toolbar, Loading },
+    components: { Layout, Row, Popup, Datatable, Search, Btn, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
@@ -157,7 +158,7 @@ new Vue({
 
         <Toolbar v-if="products.length">
             <div slot="left">
-                <Btn
+                <Search
                     title="Search"
                 />
             </div>

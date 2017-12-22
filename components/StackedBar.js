@@ -194,6 +194,7 @@ export default {
                 <!-- Y axis labels -->
 
                 <text
+                    v-if="!relative"
                     v-for="tick in yTicks"
                     :x="40"
                     :y="height - yScale(tick) + 10"
@@ -203,6 +204,17 @@ export default {
                     v-text="formatSale(parseFloat(tick))"
                 />
 
+                <text
+                    v-if="relative"
+                    v-for="(y,i) in [height,10]"
+                    x="40"
+                    :y="y"
+                    opacity="0.3"
+                    text-anchor="end"
+                    font-size="13px"
+                    v-text="['0%', '100%'][i]"
+                />
+                
             </svg>
         </div>
     `

@@ -52,7 +52,7 @@ export default {
         .Row__left {
             width: 18vw;            
             min-width: 250px;
-            overflow-y: scroll;
+            overflow: auto;
             max-height: 270px;
             padding-right: 1rem;
         }

@@ -29,7 +29,7 @@ export default {
             <span
                 class="FilterButton__right"
                 v-show="activeFilters[filterKey] === filterValue"
-            >×</span>
+            >⨉</span>
         </span>
     </div>
     `,
