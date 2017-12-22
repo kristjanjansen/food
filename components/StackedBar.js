@@ -109,7 +109,6 @@ export default {
                 >
                     <g
                         v-for="(col, coli) in columns"
-                        :opacity="showTrendline ? 0.85 : 1"
                     >
                         <g v-for="(row, rowi) in col">
                             <rect

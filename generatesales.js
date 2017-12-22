@@ -22,6 +22,13 @@ between = (a, b) => {
 
 any = items => items[~~(items.length * Math.random())]
 
+likelyFirst = (items, likeness = 0.8) => {
+    if (Math.random() > likeness) {
+        return items[1]
+    }
+    return items[0]
+}
+
 fixcase = string => string.split(' ').map(s => (s.slice(0, 1).toUpperCase() + s.slice(1).toLowerCase())).join(' ')
 
 const generateSales = () => {
@@ -74,6 +81,11 @@ packed = [
     'unpacked'
 ]
 
+campaigns = [
+    'no',
+    'yes'
+]
+
 var count = 0
 
 var csvStream = csv({headers : true})
@@ -83,9 +95,10 @@ var csvStream = csv({headers : true})
             
             const id = Math.floor(Math.random()* 100000000)
             const texture = any(textures)
-            const cut = any(cuts)
+            const cut = likelyFirst(cuts)
             const shape = any(shapes)
-            const pack = any(packed)
+            const pack = likelyFirst(packed)
+            const campaign = likelyFirst(campaigns, 0.9)
 
             chains.forEach(chain => {
                 locations.forEach(location => {
@@ -103,6 +116,7 @@ var csvStream = csv({headers : true})
                         r.chain = chain
                         r.location = location
                         r.type = type
+                        r.campaign = campaign
                         const sales = generateSales()
                         sales.forEach((price,i) => {
                             r['s' + (i + 1)] = sales[i]

@@ -48,7 +48,8 @@ new Vue({
             texture: null,
             shape: null,
             cut: null,
-            packed: null
+            packed: null,
+            campaign: null
         },
         xlabelValues,
         showTables: false,
@@ -208,9 +209,9 @@ new Vue({
                     v-if="!showTables"
                     :enabled="showRelative"
                     @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
-                    label="View"
-                    enabled-label="Relative"
-                    disabled-label="Absolute"
+                    label="Relative"
+                    enabled-label="On"
+                    disabled-label="Off"
                 />    
                 <ToggleBtn
                     :enabled="showTons"
