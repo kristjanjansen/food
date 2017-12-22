@@ -12,4 +12,8 @@ const formatSale = sale => {
     return sale
 }
 
-export { round, formatSale }
+const shortenTitle = (title, length = 20) => {
+    return title.length > length ? title.slice(0, length) + '...' : title
+}
+
+export { round, formatSale, shortenTitle }

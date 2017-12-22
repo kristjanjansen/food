@@ -1,3 +1,5 @@
+import { shortenTitle } from '../utils/utils.js'
+
 export default {
     data: () => ({
         x: 0,
@@ -18,8 +20,8 @@ export default {
             this.x = x - (this.width / 2)
             this.y = y - (this.height + 10)
             this.title = title
-            this.subtitle = subtitle.length > 20 ? subtitle.slice(0,20) + '...' : subtitle
-            this.subsubtitle = subsubtitle.length > 20 ? subsubtitle.slice(0, 20) + '...' : subsubtitle
+            this.subtitle = shortenTitle(subtitle)
+            this.subsubtitle = shortenTitle(subsubtitle)
             this.color = color
         })
         this.$bus.$on('hidePopup', () => {

@@ -33,7 +33,7 @@ new Vue({
             { title: 'Last 2y', value: 24 },
             { title: 'Last 3y', value: 36 },
         ],
-        activeMonthRange: 2,
+        activeMonthRange: 3,
         activeFilters: {
             supplier: null,
             brand: null,

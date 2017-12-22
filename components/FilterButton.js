@@ -1,5 +1,10 @@
+import { shortenTitle } from '../utils/utils.js'
+
 export default {
     props: ['filterKey', 'filterValue', 'activeFilters', 'color'],
+    methods: {
+        shortenTitle
+    },
     template: `
     <div
         class="FilterButton"
@@ -19,7 +24,7 @@ export default {
                     class="FilterButton__dot"
                     :style="{ color }"
                 >⬤</span>
-                <span v-text="filterValue" />
+                <span v-text="shortenTitle(filterValue)" />
             </span>
             <span
                 class="FilterButton__right"

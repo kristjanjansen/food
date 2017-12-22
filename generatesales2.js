@@ -54,7 +54,7 @@ const generatePrices = () => {
     //const slope = shuffle(any(slopes))
     //return slopes[3].map(value => round(tweak(value * basePrice, 0.1),2))
     return Array(3 * 12).fill(0).map(() => {
-        return round(between(1000, 10000))
+        return round(between(100, 100000))
     })
 }
 
@@ -137,7 +137,7 @@ var csvStream = csv({headers : true})
                         //     r['s' + (i + 1)] = round(quantity * prices[i])
                         // })
                         prices.forEach((price,i) => {
-                            r['s' + (i + 1)] = (function() { return round(between(100,1000)) })()
+                            r['s' + (i + 1)] = prices[i]
                         })
                         csvWriteStream.write(r)
                     })
