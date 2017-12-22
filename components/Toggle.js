@@ -94,7 +94,7 @@ export default {
         }
         .Toggle__label {
             padding-bottom: 0.3em;
-            margin-right: 0.5rem;
+            margin-right: 0.3rem;
             font-size: 0.9em;
         }
         .Toggle__enabledLabel,

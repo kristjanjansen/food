@@ -20,7 +20,7 @@ export default {
         }
         .Selector__label {
             padding-top: 0.2em;
-            margin-right: 0.5rem;
+            margin-right: 0.3rem;
             font-size: 0.9em;
         }
         .Selector__field {

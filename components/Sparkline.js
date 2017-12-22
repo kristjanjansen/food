@@ -1,13 +1,13 @@
 export default {
     props: {
-        width: { default: 100 },
+        width: { default: 150 },
         data: { default: [] },
         filled: { default: false }
     },
     data: () => ({ padding: 10 }),
     computed: {
         height() {
-            return this.width / 3
+            return this.width / 4
         }
     },
     methods: {
@@ -61,7 +61,7 @@ export default {
             <path
                 v-for="(d, index) in data"
                 fill="none"
-                stroke-width="2"
+                stroke-width="1"
                 :stroke="color(lastChange(d))"
                 stroke-linejoin="round"
                 :d="line(d.values)"

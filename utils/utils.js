@@ -2,12 +2,18 @@ const round = (value, decimals = 0) => {
     return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals)
 }
 
-const formatSale = sale => {
+const formatSale = (sale, showTons = false) => {
     if (sale >= 1000000) {
-        return Math.floor(sale / 1000000) + 'm'
+        if (showTons) {
+            return round(Math.floor(sale / (1000000 * 100))) + 'T'
+        }
+        return '€' + Math.floor(sale / 1000000) + 'm'
     }
     if (sale >= 1000) {
-        return Math.floor(sale / 1000) + 'k'
+        if (showTons) {
+            return round(Math.floor(sale / (1000 * 100))) + 'T'
+        }
+        return '€' + Math.floor(sale / 1000) + 'k'
     }
     return sale
 }

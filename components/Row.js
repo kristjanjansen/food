@@ -11,7 +11,7 @@ export default {
         'xlabels',
         'ylabels',
         'max',
-        'focusIndex'
+        'focusIndex',
     ],
     template: `
         <div class="Row">
@@ -58,7 +58,6 @@ export default {
         }
         .Row__right {
             width: 100%;
-            border-left: 1px solid rgba(0,0,0,0.05);
             margin-left: 5px;
         }
     `

@@ -5,6 +5,7 @@ import Search from './components/Search.js'
 import Selector from './components/Selector.js'
 import Btn from './components/Btn.js'
 import Toggle from './components/Toggle.js'
+import ToggleBtn from './components/ToggleBtn.js'
 import Toolbar from './components/Toolbar.js'
 import Loading from './components/Loading.js'
 import Datatable from './components/Datatable.js'
@@ -20,7 +21,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Datatable, Search, Selector, Btn, Toggle, Toolbar, Loading },
+    components: { Layout, Row, Popup, Datatable, Search, Selector, Btn, Toggle, ToggleBtn, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
@@ -33,7 +34,7 @@ new Vue({
         monthRanges: [
             { title: 'Last week', value: 2 },
             { title: 'Last 4 weeks', value: 4 },
-            { title: 'Last 27 weeks', value: 27 },
+            { title: 'Last 32 weeks', value: 32 },
             { title: 'Last 54 weeks', value: 54 },
         ],
         activeMonthRange: 2,
@@ -53,9 +54,8 @@ new Vue({
         showTables: false,
         showTrendline: false,
         showRelative: false,
-        showCampaigns: false,
         showWeeks: true,
-        showEur: true,
+        showTons: false,
     }),
     methods: {
         calculateSales(products) {
@@ -165,11 +165,6 @@ new Vue({
                 <Search
                     title="Search"
                 />
-                <Toggle
-                    :enabled="showCampaigns"
-                    @click.native="showCampaigns = !showCampaigns"
-                    label="Campaigns"
-                />
             </div>
             <div slot="center">
                 <Selector
@@ -188,7 +183,7 @@ new Vue({
                 />
                 <Toggle
                     :enabled="showWeeks"
-                    @click.native="showWeeks = !showWeeks"
+                    @click.native="showWeeks = !showWeeks; $bus.$emit('showWeeks', showWeeks)"
                     enabled-label="Weeks"
                     disabled-label="Months"
                 />
@@ -201,29 +196,33 @@ new Vue({
                 /-->
             </div>
             <div slot="right">
-                <Toggle
+                <ToggleBtn
                     v-if="!showTables"
                     :enabled="showTrendline"
                     @click.native="showTrendline = !showTrendline; $bus.$emit('showTrendline', showTrendline)"
-                    label="Trendline"
+                    label="Trend"
+                    enabled-label="On"
+                    disabled-label="Off"
                 />
-                <Toggle
+                <ToggleBtn
                     v-if="!showTables"
                     :enabled="showRelative"
                     @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
-                    label="Relative view"
+                    label="View"
+                    enabled-label="Relative"
+                    disabled-label="Absolute"
                 />    
+                <ToggleBtn
+                    :enabled="showTons"
+                    @click.native="showTons = !showTons; $bus.$emit('showTons', showTons)"
+                    label="Unit"
+                    enabled-label="T"
+                    disabled-label="€"
+                />
                 <Btn
-                    v-if="false"
                     :title="showTables ? 'Show in graphs' : 'Show in table'"
                     :active="true"
                     @click.native="showTables = !showTables"
-                />
-                <Toggle
-                    :enabled="showEur"
-                    @click.native="showEur = !showEur"
-                    enabled-label="€"
-                    disabled-label="t"
                 />
             </div>
         </Toolbar>

@@ -15,11 +15,16 @@ export default {
     },
     data: () => ({
         padding: 5,
-        showTrendline: false
+        showTrendline: false,
+        showRelative: false,
+        showWeeks: true,
+        showTons: false
     }),
     mounted() {
         this.$bus.$on('showTrendline', showTrendline => this.showTrendline = showTrendline)
         this.$bus.$on('showRelative', showRelative => this.relative = showRelative)
+        this.$bus.$on('showWeeks', showWeeks => this.showWeeks = showWeeks)
+        this.$bus.$on('showTons', showTons => this.showTons = showTons)
     },
     computed: {
         maxValue() {
@@ -178,7 +183,7 @@ export default {
 
                 <!-- X axis labels -->
 
-                <g v-if="columns.length < 33" v-for="r in [0,1]">
+                <g v-if="columns.length < 40" v-for="r in [0,1]">
                     <text
                         v-for="(label, labeli) in xlabels"
                         :x="xScale(labeli) + (xScale(1) * 0.4) + 50"
@@ -187,7 +192,7 @@ export default {
                         alignment-baseline="central"
                         opacity="0.3"
                         font-size="13px"
-                        v-text="label[r]"
+                        v-text="(showWeeks && r == 0) ? 'W' + (labeli + 1) : label[r]"
                     />
                 </g>
 
@@ -201,7 +206,7 @@ export default {
                     text-anchor="end"
                     opacity="0.3"
                     font-size="13px"
-                    v-text="formatSale(parseFloat(tick))"
+                    v-text="formatSale(parseFloat(tick), showTons)"
                 />
 
                 <text
