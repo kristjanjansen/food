@@ -9,7 +9,7 @@
                         //     .range([color1, color2])
                         //     (index)
 
-  
+
 export default (filterIndex, valuesLength) => {
     const colors =
         _.flatten(Array(3).fill(null).map((value, index) => {
@@ -17,7 +17,7 @@ export default (filterIndex, valuesLength) => {
                 .map(color => {
                     const c = d3.hsl(color).brighter(index * 0.2)
                     c.h += filterIndex * 30
-                    c.s = 0.75
+                    c.s = 0.5
                     return c
                 })
         }))
