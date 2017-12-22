@@ -7,8 +7,9 @@ import Loading from './components/Loading.js'
 import Datatable from './components/Datatable.js'
 
 import injectCss from './utils/injectCss.js'
-import xlabelValues from './utils/xlabelValues.js'
 import prepareData from './utils/prepareData.js'
+import xlabelValues from './utils/xlabelValues.js'
+import getColors from './utils/getColors.js'
 
 Vue.prototype.$bus = new Vue()
 
@@ -32,7 +33,7 @@ new Vue({
             { title: 'Last 27 weeks', value: 27 },
             { title: 'Last 54 weeks', value: 54 },
         ],
-        activeMonthRange: 3,
+        activeMonthRange: 2,
         activeFilters: {
             supplier: null,
             brand: null,
@@ -107,21 +108,12 @@ new Vue({
                 // Converting values to Set and back to array
                 // makes the values unique
                 const values = [...new Set(this.products.map(p => p[filterKey]))]
-                const color1 = d3.color(d3.schemeCategory10[filterIndex]).darker(1)
-                let color2 = d3.hsl(color1)
-                color2.h -= 40
-                color2 = color2.brighter(1)
+                
+
                 return {
                     key: filterKey,
                     values: values,
-                    colors: values.map((v, index) => {
-                        return d3.scaleLinear()
-                            .domain([0, values.length - 1])
-                            .range([color1, color2])
-                            (index)
-                    })
-                            
-                    
+                    colors: getColors(filterIndex, values.length)
                 }
             })
         },
