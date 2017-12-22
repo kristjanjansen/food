@@ -27,50 +27,47 @@ export default {
         })
     },
     template: `
-    <transition name="fade">
+        <transition name="fade">
         <div
             v-show="show"
+            class="Popup"
             :style="{
-                position: 'fixed',
                 height: height + 'px',
                 width: width + 'px',
                 left: x + 'px',
                 top: y + 'px',
-                background: 'white',
-                border: '2px solid rgba(0,0,0,0.1)',
-                padding: '10px',
-                borderRadius: '5px',
-                boxShadow: '0 0 4px rgba(0,0,0,0.05)',
-                whiteSpace: 'nowrap'
-
             }"
         >
-            <div
-                :style="{
-                    fontSize: '1.5em',
-                    lineHeight: '1em',
-                    color: color,
-                    marginBottom: '0.1rem'
-                }"
-                v-text="title"
-            />
-            <div
-                :style="{
-                    fontSize: '0.85em',
-                    color: 'rgba(0,0,0,0.6)',
-                    marginBottom: '0.1rem',
-                    opacity: 0.8
-                }"
-                v-text="subtitle"
-            />
-            <div
-                :style="{
-                    fontSize: '0.85em',
-                    color: 'rgba(0,0,0,0.25)'
-                }"
-                v-text="subsubtitle"
-            />
+            <div class="Popup__title" :style="{ color }" v-text="title" />
+            <div class="Popup__subtitle" v-text="subtitle" />
+            <div class="Popup__subsubtitle" v-text="subsubtitle" />
         </div>
-    </transition>
+        </transition>
+    `,
+    css: `
+        .Popup {
+            position: fixed;
+            background: white;
+            border: 2px solid rgba(0,0,0,0.1);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 4px rgba(0,0,0,0.05);
+            white-space: nowrap;
+        }
+        .Popup__title {
+            font-size: 1.5em;
+            line-height: 1em;
+            margin-bottom: 0.1rem;
+        }
+        .Popup__subtitle {
+            font-size: 0.85em;
+            color: rgba(0,0,0,0.6);
+            margin-bottom: 0.1rem;
+            opacity: 0.8;
+        }
+        .Popup__subsubtitle {
+            font-size: 0.85em;
+            color: rgba(0,0,0,0.25);
+        }
     `
 }

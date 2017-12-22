@@ -10,6 +10,10 @@ export default {
         .Toolbar {
             padding: 1rem;
             border-bottom: 1px solid rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.06);
         }
         .Toolbar {
             display: flex;

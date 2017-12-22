@@ -1,19 +1,15 @@
 export default {
-
     props: {
         width: { default: 100 },
         data: { default: [] },
         filled: { default: false }
     },
-
     data: () => ({ padding: 10 }),
-
     computed: {
         height() {
             return this.width / 3
         }
     },
-
     methods: {
         xScale(index) {
             return d3.scaleLinear()
@@ -54,27 +50,23 @@ export default {
         },
     },
     template: `
-    <svg :width="width" :height="height">
-
-
-        <path
-            v-if="filled"
-            v-for="(d, index) in data"
-            :fill="color(lastChange(d))"
-            :d="area(d.values)"
-            opacity="0.25"
-        />
-
-        <path
-            v-for="(d, index) in data"
-            fill="none"
-            stroke-width="2"
-            :stroke="color(lastChange(d))"
-            stroke-linejoin="round"
-            :d="line(d.values)"
-            opacity="0.5"
-        />
-
-    </svg>
+        <svg :width="width" :height="height">
+            <path
+                v-if="filled"
+                v-for="(d, index) in data"
+                :fill="color(lastChange(d))"
+                :d="area(d.values)"
+                opacity="0.25"
+            />
+            <path
+                v-for="(d, index) in data"
+                fill="none"
+                stroke-width="2"
+                :stroke="color(lastChange(d))"
+                stroke-linejoin="round"
+                :d="line(d.values)"
+                opacity="0.5"
+            />
+        </svg>
     `
 }

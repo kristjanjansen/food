@@ -198,17 +198,6 @@ export default {
                     v-text="formatSale(parseFloat(tick))"
                 />
 
-                <!--text
-                    v-for="(y,i) in [height,10]"
-                    x="40"
-                    :y="y"
-                    opacity="0.3"
-                    text-anchor="end"
-                    font-size="13px"
-                    v-text="yLabels[i]"
-                /-->
-
-                
             </svg>
         </div>
     `
