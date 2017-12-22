@@ -20,39 +20,14 @@ between = (a, b) => {
   return round(a + Math.random() * (b - a), 2)
 }
 
-scale = (value, start1, stop1, start2, stop2) => {
-    return (value - start1) / (stop1 - start1) * (stop2 - start2) + start2
-}
-
 any = items => items[~~(items.length * Math.random())]
-
-tweak = (value, amount) => value * scale(Math.random(),0,1,1 - amount,1 + amount)
-
-shuffle = array => array.map((a) => [Math.random(),a]).sort((a,b) => a[0] - b[0]).map((a) => a[1])
 
 fixcase = string => string.split(' ').map(s => (s.slice(0, 1).toUpperCase() + s.slice(1).toLowerCase())).join(' ')
 
-// 0 Ascending
-// 1 Descending
-// 2 Instable
-// 3 Stable
-const slopes = [
-    [0.10,0.12,0.20,0.49,0.56,0.54,0.62,0.63,0.72,0.79,0.88,0.95,0.10,0.12,0.20,0.49,0.56,0.54,0.62,0.63,0.72,0.79,0.88,0.95,0.10,0.12,0.20,0.49,0.56,0.54,0.62,0.63,0.72,0.79,0.88,0.95], 
-    [0.89,0.83,0.80,0.77,0.82,0.80,0.72,0.71,0.64,0.52,0.52,0.44,0.89,0.83,0.80,0.77,0.82,0.80,0.72,0.71,0.64,0.52,0.52,0.44,0.89,0.83,0.80,0.77,0.82,0.80,0.72,0.71,0.64,0.52,0.52,0.44], 
-    [0.74,0.42,0.52,0.20,0.95,0.70,0.66,0.43,0.72,0.32,0.43,0.21,0.74,0.42,0.52,0.20,0.95,0.70,0.66,0.43,0.72,0.32,0.43,0.21,0.74,0.42,0.52,0.20,0.95,0.70,0.66,0.43,0.72,0.32,0.43,0.21], 
-    [0.50,0.48,0.52,0.53,0.51,0.42,0.39,0.52,0.57,0.44,0.32,0.47,0.50,0.48,0.52,0.53,0.51,0.42,0.39,0.52,0.57,0.44,0.32,0.47,0.50,0.48,0.52,0.53,0.51,0.42,0.39,0.52,0.57,0.44,0.32,0.47], 
-]
-
-const generateQuantities = () => {
-    const baseQuantity = between(1000,10000)
-    return any(slopes).map(value => round(tweak(value * baseQuantity, 0.5)))
-    //const changes = sales.map(sale => round(((sale - baseSale) / baseSale) * 100))
-}
-
 const generatePrices = () => {
-    const basePrice = between(0.5,1)
-    const slope = shuffle(any(slopes))
-    return slopes[3].map(value => round(tweak(value * basePrice, 0.1),2))
+   return Array(3 * 12).fill(0).map(() => {
+        return round(between(100, 100000))
+    })
 }
 
 const chains = [
@@ -128,10 +103,9 @@ var csvStream = csv({headers : true})
                         r.chain = chain
                         r.location = location
                         r.type = type
-                        const quantities = generateQuantities()
                         const prices = generatePrices()
-                        quantities.forEach((quantity, i) => {
-                            r['s' + (i + 1)] = round(quantity * prices[i])
+                        prices.forEach((price,i) => {
+                            r['s' + (i + 1)] = prices[i]
                         })
                         csvWriteStream.write(r)
                     })
