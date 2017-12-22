@@ -41,22 +41,22 @@ export default {
         .Datatable {
             padding: 2rem;
         }
-        table {
+        .Datatable table {
             border-collapse: collapse;
             width: 100%;
             font-face: Cousine, monospace;
             font-size: 0.8em;
         }
-        th {
+        .Datatable th {
             text-align: left;
             padding: 0.25rem 1rem 0.25rem 0;
             color: rgba(0,0,0,0.3);
             text-transform: capitalize;
         }
-        tr {
+        .Datatable tr {
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
-        td {
+        .Datatable td {
             padding: 0.15rem 0.5rem 0.15rem 0.25rem;
             color: rgba(0,0,0,0.5);
         }
