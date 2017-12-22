@@ -51,7 +51,8 @@ new Vue({
         xlabelValues,
         showTables: false,
         showTrendline: false,
-        showRelative: false
+        showRelative: false,
+        showCampaigns: false
     }),
     methods: {
         calculateSales(products) {
@@ -162,7 +163,11 @@ new Vue({
                 <Search
                     title="Search"
                 />
-                <Toggle :enabled="showTrendline" @click.native="showTrendline = !showTrendline" />
+                <Toggle
+                    :enabled="showCampaigns"
+                    @click.native="showCampaigns = !showCampaigns"
+                    label="Campaigns"
+                />
             </div>
             <div slot="center">
                 <Btn
@@ -174,10 +179,15 @@ new Vue({
                 />
             </div>
             <div slot="center" v-if="!showTables">
-                <Btn
-                    :title="showTrendline ? 'Hide trendline' : 'Show trendline'"
+                <Toggle
+                    :enabled="showTrendline"
                     @click.native="showTrendline = !showTrendline; $bus.$emit('showTrendline', showTrendline)"
-                    :active="true"
+                    label="Trendline"
+                />
+                <Toggle
+                    :enabled="showRelative"
+                    @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
+                    label="Relative view"
                 />
                 <Btn
                     :title="showRelative ? 'Show absolute change' : 'Show relative change'"

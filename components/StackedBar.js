@@ -36,7 +36,7 @@ export default {
         yScale() {
             return d3.scaleLinear()
                 .domain([0, this.maxValue])
-                .range([0, this.height])
+                .range([0, this.height - 10])
         },
         columns() {
             return _.zip(...this.data)

@@ -1,5 +1,7 @@
 import Sparkline from './Sparkline.js'
 
+import { shortenTitle } from '../utils/utils.js'
+
 export default {
     components: { Sparkline },
     props: { data: { default: [{ sales: []}] } },
@@ -14,6 +16,9 @@ export default {
             return []
         }
     },
+    methods: {
+        shortenTitle
+    },
     template: `
      <div class="Datatable">
         <table>
@@ -25,10 +30,10 @@ export default {
             </tr>
             <tr v-for="row in data">
                 <td v-for="key in keys">
-                    {{ row[key] }}
+                    {{ shortenTitle(row[key]) }}
                 </td>
-                <td v-for="sale in row.sales">
-                    {{ sale }}
+                <td style="max-width: 300px; overflow: scroll;">
+                    {{ row.sales.slice(0,4).join(' ') }}...
                 </td>
                 <td>
                     <Sparkline :filled="true" :data="[{values: row.sales}]" />
@@ -41,10 +46,10 @@ export default {
         .Datatable {
             padding: 2rem;
         }
-        .Datatable table {
+        table {
             border-collapse: collapse;
             width: 100%;
-            font-face: Cousine, monospace;
+            font-family: Cousine, monospace;
             font-size: 0.8em;
         }
         .Datatable th {
