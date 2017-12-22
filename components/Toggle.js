@@ -102,12 +102,12 @@ export default {
             font-size: 0.7em;
             text-transform: uppercase;
             padding-bottom: 0.3em;
-        },
+        }
         .Toggle__enabledLabel {
-            margin-left: 0.2rem;
-        },
+            margin-left: 0.25rem;
+        }
         .Toggle__disabledLabel {
-            margin-right: 0.2rem;
+            margin-right: 0.25rem;
         }
 
     `

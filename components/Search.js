@@ -11,7 +11,7 @@ export default {
             display: flex;
             align-items: center;
             border-radius: 100px;
-            padding: 0 100px 2px 10px;
+            padding: 0 60px 2px 10px;
             cursor: pointer;
             font-size: 0.9em;
             white-space: nowrap;

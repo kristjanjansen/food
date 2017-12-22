@@ -2,6 +2,7 @@ import Layout from './components/Layout.js'
 import Row from './components/Row.js'
 import Popup from './components/Popup.js'
 import Search from './components/Search.js'
+import Selector from './components/Selector.js'
 import Btn from './components/Btn.js'
 import Toggle from './components/Toggle.js'
 import Toolbar from './components/Toolbar.js'
@@ -19,7 +20,7 @@ Vue.mixin(injectCss)
 
 new Vue({
     el: '#app',
-    components: { Layout, Row, Popup, Datatable, Search, Btn, Toggle, Toolbar, Loading },
+    components: { Layout, Row, Popup, Datatable, Search, Selector, Btn, Toggle, Toolbar, Loading },
     mounted() {
         Papa.parse('./products.csv', {
             download: true,
@@ -52,7 +53,9 @@ new Vue({
         showTables: false,
         showTrendline: false,
         showRelative: false,
-        showCampaigns: false
+        showCampaigns: false,
+        showWeeks: true,
+        showEur: true,
     }),
     methods: {
         calculateSales(products) {
@@ -112,7 +115,6 @@ new Vue({
                 // makes the values unique
                 const values = [...new Set(this.products.map(p => p[filterKey]))]
                 
-
                 return {
                     key: filterKey,
                     values: values,
@@ -170,34 +172,58 @@ new Vue({
                 />
             </div>
             <div slot="center">
-                <Btn
+                <Selector
+                    label="From"
+                    :title="showWeeks ? 'Week 1' : 'Jan       '"
+                />
+                <Selector
+                    title="2017"
+                />
+                <Selector
+                    label="To"
+                    :title="showWeeks ? 'Week 52' : 'Dec       '"
+                />
+                <Selector
+                    title="2017"
+                />
+                <Toggle
+                    :enabled="showWeeks"
+                    @click.native="showWeeks = !showWeeks"
+                    enabled-label="Weeks"
+                    disabled-label="Months"
+                />
+                <!--Btn
                     v-for="(range, index) in monthRanges"
                     :key="index"
                     :title="range.title"
                     @click.native="activeMonthRange = index"
                     :active="activeMonthRange == index"
-                />
+                /-->
             </div>
-            <div slot="center" v-if="!showTables">
+            <div slot="right">
                 <Toggle
+                    v-if="!showTables"
                     :enabled="showTrendline"
                     @click.native="showTrendline = !showTrendline; $bus.$emit('showTrendline', showTrendline)"
                     label="Trendline"
                 />
                 <Toggle
+                    v-if="!showTables"
                     :enabled="showRelative"
                     @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
                     label="Relative view"
-                />
+                />    
                 <Btn
-                    :title="showRelative ? 'Show absolute change' : 'Show relative change'"
-                    @click.native="showRelative = !showRelative; $bus.$emit('showRelative', showRelative)"
-                    :active="true"
-                />       
-                <Btn
+                    v-if="false"
                     :title="showTables ? 'Show in graphs' : 'Show in table'"
                     :active="true"
                     @click.native="showTables = !showTables"
+                />
+                <Toggle
+                    :enabled="showEur"
+                    @click.native="showEur = !showEur"
+                    enabled-label="€"
+                    disabled-label="t"
                 />
             </div>
         </Toolbar>
